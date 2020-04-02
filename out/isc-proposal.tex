@@ -1,0 +1,364 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
+\hypersetup{
+            pdftitle={Database interoperability for spatial objects in R},
+            pdfauthor={Etienne Racine and Edzer Pebesma},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\title{Database interoperability for spatial objects in R}
+\author{Etienne Racine and Edzer Pebesma}
+\date{2020-04-01}
+
+\begin{document}
+\maketitle
+
+\hypertarget{signatories}{%
+\section{Signatories}\label{signatories}}
+
+\hypertarget{project-team}{%
+\subsection{Project team}\label{project-team}}
+
+Etienne Racine, Edzer Pebesma
+
+\hypertarget{contributors}{%
+\subsection{Contributors}\label{contributors}}
+
+\hypertarget{consulted}{%
+\subsection{Consulted}\label{consulted}}
+
+\hypertarget{the-problem}{%
+\section{The Problem}\label{the-problem}}
+
+Large spatial data can be hard to analyze with R because of RAM
+limitations. Users often turn to spatial databases for this process and
+go back-and-forth with R, since R is still needed for e.g.~modeling.
+Also corporations and large research groups, among others, often store
+data in a central database. The ability to interact directly with a
+spatial database, from R, can accelerate the work of R users.
+
+The sf package is built on the simple feature OGC standard, which
+facilitates the interoperability with spatial databases. We already
+provide read and write operations to postgis from sf, and we can also
+integrate with the dbplyr package to push execution into the database.
+The gdal driver within sf also provides interoperability, but does not
+allow integration with the dplyr workflow.
+
+This proposal is to :
+
+\begin{itemize}
+\tightlist
+\item
+  Complete and clarify the interface for the \texttt{RPostgres} and
+  \texttt{odbc} driver
+\item
+  Create a tutorial to use the database interface
+\end{itemize}
+
+\hypertarget{the-proposal}{%
+\section{The proposal}\label{the-proposal}}
+
+\begin{itemize}
+\tightlist
+\item
+  Clarify the workflow integration with dplyr
+\item
+  How to select a database spatial engine (maybe we could wrap the
+  connection with a spatial extension)
+\item
+  Merge work form geotidy to sf
+\item
+  Document the workflow
+\item
+  Provide tutorials
+\item
+  Complete odbc support for Postgres, which would potentially open to
+  other spatial extensions
+\item
+  Document the features needed for DBI drivers (\texttt{SQLite},
+  \texttt{MariaDB}, \texttt{bigrquery})
+\end{itemize}
+
+\hypertarget{overview}{%
+\subsection{Overview}\label{overview}}
+
+This proposal builds on the successfully funded simple feature
+(\texttt{sf}) project. \texttt{sf} is built on the simple feature OGC
+standard, which facilitates the interoperability with spatial databases.
+The sf package already supports read and write for postgis, one of the
+most common and powerful spatial databases, and can use the dbplyr
+package to push execution into the database. The gdal driver also
+provides interoperability, but does not allow integration with the dplyr
+workflow. This feature is however is not very well documented, and
+little used.
+
+The proposal is to complete the database support by making more sf
+operations compatible with other databases, facilitate integration tests
+by moving database support to another package (sfdbi) and add support
+for other databases through odbc, potentially unlocking many other
+spatial databases compatible with the OGC standard. The following table
+provides some of the most important spatial databases in use.
+
+\begin{verbatim}
+## # A tibble: 17 x 4
+##    Database             `Spatial extension` `R Driver`  `Current support☨`           
+##    <chr>                <chr>               <chr>       <chr>                        
+##  1 PostgreSQL           Postgis             Postgres    Partial                      
+##  2 PostgreSQL           Postgis             RPostgreSQL Partial                      
+##  3 PostgreSQL           Postgis             odbc        Partial - Not tested         
+##  4 Couchdb              Geocouch            sofa        Unknown                      
+##  5 PostgreSQL           ArcSDE              odbc        Unknown - Reported usage     
+##  6 Spark                Geospark            sparklyr    Partial with geospark package
+##  7 Oracle               Oracle Spatial      odbc        Unknown                      
+##  8 Microsoft SQL Server Native              odbc        Unknown - Reported usage     
+##  9 MySQL                Native (primitive)  odbc        Unknown                      
+## 10 SQlite               SpatialLite         RSQLite     Unknown                      
+## 11 MariaDB              Native              RMariaDB    Unknown                      
+## 12 BigQuery             BigQuery GIS        bigrquery   Unknown                      
+## 13 H2                   H2GIS               RH2         Unknown                      
+## 14 Redshift             Native (primitive)  odbc        Unknown                      
+## 15 MongoDB              Native (primitive)  mongolite   Unknown                      
+## 16 Parquet              None                arrow       Unknown - Speculative        
+## 17 Feather              None                arrow       Unknown - Speculative
+\end{verbatim}
+
+☨ Partial support: is currently supported by sf, but the set of features
+is limited; Not tested: not included in the continuous integration tests
+(although there are some ad-hoc tests that can be run manually);
+Unknown: not tested, might work partially; Reported usage: not tested,
+but users have notified they had used it; Speculative: we've had
+discussions with the Ursa Labs team, and it seems possible and will
+require development on our side and on the arrow side -- this would
+greatly facilitate interoperability with the spatial python ecosystem
+and geopandas.
+
+\hypertarget{detail}{%
+\subsection{Detail}\label{detail}}
+
+Minimally, we propose to support dplyr workflows with collect, tbl,
+copy\_to et al.~methods for postgis\_connection objects. Expand sf
+functions to be compatible with postgis to the extent possible Teach,
+through tutorials how to interface with a spatial database and
+
+The plan is: In sf, refactor code so we can extract the database
+interface in a separate package It will make maintenance easier
+Accelerate integration tests Remove DBI dependency In sf, adapt, to the
+extent possible, functionalities for the database interaction Build a
+second package, sfdbi, to contain the spatial interface The intended
+design is to create a spatial database class that could be used to
+extend the tbl functionality to read and write spatial data using
+copy\_to() and collect(). This is what a minimal usage would look like:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# A DBI connection modifier (to allow support for more }
+\CommentTok{# spatial databases (see table 1)}
+\NormalTok{postgis <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(...)\{}
+    \KeywordTok{structure}\NormalTok{(..., }\DataTypeTok{class =} \KeywordTok{c}\NormalTok{(}\StringTok{"postgis_connection"}\NormalTok{, }\KeywordTok{class}\NormalTok{(...)))}
+\NormalTok{\}}
+
+\CommentTok{# Usage}
+\NormalTok{con <-}\StringTok{ }\NormalTok{DBI}\OperatorTok{::}\KeywordTok{dbConnect}\NormalTok{(RPostgres}\OperatorTok{::}\KeywordTok{Postgres}\NormalTok{()) }\OperatorTok{%>%}
+\StringTok{    }\KeywordTok{postgis}\NormalTok{()}
+
+\CommentTok{# Copy spatial data to database}
+\NormalTok{x <-}\StringTok{ }\KeywordTok{copy_to}\NormalTok{(con, }\KeywordTok{tibble}\NormalTok{(}
+    \DataTypeTok{lon =} \DecValTok{1}\OperatorTok{:}\DecValTok{3}\NormalTok{,}
+    \DataTypeTok{lat =} \DecValTok{3}\OperatorTok{:}\DecValTok{1}\NormalTok{,}
+    \DataTypeTok{geom =} \KeywordTok{st_makepoint}\NormalTok{(longitude, latitude) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{st_setsrid}\NormalTok{(}\DecValTok{4326}\NormalTok{)}
+\NormalTok{))}
+
+\KeywordTok{collect}\NormalTok{(x)  }\CommentTok{# would return a tbl with an sfc column}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{project-plan}{%
+\section{Project plan}\label{project-plan}}
+
+\hypertarget{start-up-phase}{%
+\subsection{Start-up phase}\label{start-up-phase}}
+
+\hypertarget{technical-delivery}{%
+\subsection{Technical delivery}\label{technical-delivery}}
+
+\hypertarget{other-aspects}{%
+\subsection{Other aspects}\label{other-aspects}}
+
+\hypertarget{requirements}{%
+\section{Requirements}\label{requirements}}
+
+The solution is clear, and the implementation seems to be relatively
+simple. in the worst case, we could minimize the changes to \texttt{sf}
+to avoid breaking existing code. We don't expect to require changes to
+\texttt{dbplyr}, but this could a source of delays or modification to
+the plan. \texttt{rodbc} could also need some modifications, but we have
+already existing workarounds. We have not identified other external
+factors that could impact this project.
+
+\hypertarget{people}{%
+\subsection{People}\label{people}}
+
+Etienne will lead the project: refactor, develop and document; Edzer
+will be involved in design and approval for \texttt{sf}.
+
+\hypertarget{processes}{%
+\subsection{Processes}\label{processes}}
+
+The new package \texttt{sfdbi} will be added to the r-spatial.org and
+will adhere to the code of conduct of the The tutorials will be shared
+via github pages and ideally could be run on docker, rstudio.cloud, or
+netlify to make it easy for the community to use.
+
+\hypertarget{tools-tech}{%
+\subsection{Tools \& Tech}\label{tools-tech}}
+
+We will use github actions to test on linux versions (currently the only
+OS to support services on github actions).
+
+\hypertarget{funding}{%
+\subsection{Funding}\label{funding}}
+
+We request US\$ 6,000 for this project.
+
+\hypertarget{summary}{%
+\subsection{Summary}\label{summary}}
+
+\begin{itemize}
+\tightlist
+\item
+  Refactor \texttt{sf} (2000)
+\item
+  Develop \texttt{sfdbi} (2000)
+\item
+  Write a tutorial and polish documentation (2000)
+\end{itemize}
+
+\hypertarget{success}{%
+\section{Success}\label{success}}
+
+\hypertarget{definition-of-done}{%
+\subsection{Definition of done}\label{definition-of-done}}
+
+We can interact with a \texttt{PostgreSQL} database from R by using
+\texttt{dplyr} workflow and people use it because the documentation is
+clear and there are good tutorials.
+
+\hypertarget{measuring-success}{%
+\subsection{Measuring success}\label{measuring-success}}
+
+Increased number of users of the spatial database interface.
+
+\hypertarget{future-work}{%
+\subsection{Future work}\label{future-work}}
+
+This work hopefully makes it easier to add support for other spatial
+databases (table 1).
+
+\hypertarget{key-risks}{%
+\subsection{Key risks}\label{key-risks}}
+
+\begin{itemize}
+\tightlist
+\item
+  Pandemic
+\end{itemize}
+
+\end{document}
