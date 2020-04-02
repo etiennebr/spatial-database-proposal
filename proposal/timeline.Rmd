@@ -1,5 +1,13 @@
 # Project plan
 
+The plan is:
+- In `sf`, refactor code so we can extract the database interface in a separate package
+- It will make maintenance easier
+- Accelerate integration tests
+- Remove `DBI` dependency
+- In `sf`, adapt, to the extent possible, functionalities for the database interaction
+- Build a second package, `sfdbi`, to contain the spatial interface
+
 ## Start-up phase
 <!--
 Covering the planning phase, this section should provide a relatively detailed plan of how work will start on the project. This section is important because projects need to get up and running quickly.
@@ -10,6 +18,9 @@ Covering the planning phase, this section should provide a relatively detailed p
  - [ ] Reporting framework
 -->
 
+The collaboration will happen through r-spatial. The `sf` repository will receive the updates, the `sfdbi` package will be hosted on [r-spatial](https://github.com/r-spatial) and the cummunity communication and status updates will happen on [r-spatial/discuss](https://github.com/r-spatial/discuss), r-sgi-geo and #rspatial on twitter.
+
+The `sfdbi` will use the tidyverse template for licensing, code of conduct, contributions, etc.
 
 ## Technical delivery
 <!--
@@ -17,6 +28,51 @@ Covering the actual delivery of the project this section should provide at least
 
 Including target dates is really important as you need to be committed and the ISC need to have a means of tracking delivery
 -->
+
+The intended design is to create a spatial database class that could be used to extend the `tbl` functionality to read and write spatial data using `copy_to()` and `collect()`. 
+This is what a minimal usage would look like:
+
+```{r, eval = FALSE}
+# A DBI connection modifier (to allow support for more 
+# spatial databases (see table 1)
+postgis <- function(...){
+  structure(..., class = c("postgis_connection", class(...)))
+}
+
+copy_to.postgis_connection <- function(con,...) {
+  x <- dbWriteTable(con, ...)  # we already have a dbWriteTable
+  structure(x, class = c("tbl_sf", class(...)))
+}
+
+copy_to.tbl_sf <- function(con,...) {
+  dbWriteTable(con, ...)  # we already have a sf::dbWriteTable for DBIObject
+}
+
+collect.tbl_sf <- function(con,...) {
+  # execute the remote query via dbplyr
+  # [...]
+  st_read(con, x)  # we already have a sf::st_read.DBIObject
+}
+
+# Usage
+con <- DBI::dbConnect(RPostgres::Postgres()) %>%
+  postgis()
+
+# Copy spatial data to database
+x <- copy_to(con, tibble(
+  lon = 1:3,
+  lat = 3:1,
+  geom = st_makepoint(longitude, latitude)
+))
+
+y <- x %>% 
+  mutate(
+    geom = st_buffer(geom, 10)
+  )
+
+collect(y)  # would return a tbl with an sfc column
+```
+
 
 ## Other aspects
 <!--
@@ -28,3 +84,5 @@ Covering non-technical activities like on-going publicity, paper preparation, di
  - [ ] UseR!
  - [ ] ISC meetings
 -->
+- Announcement post early July through #rspatial, [r-spatial/discuss](https://github.com/r-spatial/discuss), r-sgi-geo
+- Tutorial at the end of September announced on #rspatial, [r-spatial/discuss](https://github.com/r-spatial/discuss), r-sgi-geo

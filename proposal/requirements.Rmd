@@ -2,16 +2,23 @@
 <!-- 
 An idea of what is required to make the project actually happen
 -->
+The solution is clear, and the implementation seems to be relatively simple. in the worst case, we could minimize the changes to `sf` to avoid breaking existing code. We don't expect to require changes to `dbplyr`, but this could a source of delays or modification to the plan. 
+`rodbc` could also need some modifications, but we have already existing workarounds. 
+We have not identified other external factors that could impact this project. 
 
 ## People
 <!--
 Who needs to be involved, what's the proposed structure, what will it take to get their involvement?
 -->
+Etienne will lead the project: refactor, develop and document; 
+Edzer will be involved in global design and change review for `sf`.
 
 ## Processes
 <!-- 
 What processes need to be put in place e.g. codes of conduct, regular ISC meetings, handover to the community at large?
 -->
+The new package `sfdbi` will be added to the r-spatial.org and will adhere to the code of conduct of the 
+The tutorials will be shared via github pages and ideally could be run on docker, rstudio.cloud, or netlify to make it easy for the community to use.
 
 ## Tools & Tech
 <!--
@@ -21,14 +28,19 @@ Will cloud computing be used - if yes are there are necessary components that wi
 
 Are there tools or tech that don't exist that will be produced to facilitate the project?
 -->
+We will use github actions to systematically test on linux (currently the only OS to support services on github actions). We might perform as-hoc tests for other OS when needed. 
 
 ## Funding
 <!-- 
 [TO DO] THE GUIDANCE IS PRETTY UNCLEAR, ESP IN LIGHT OF GABOR'S PROPOSAL VS AWARD SIZE
 
 -->
+We request US$ 6,000 for this project.
 
 ## Summary
 <!--
 A summary of the requirements that contextualises the costs
 -->
+- Refactor `sf` (2000)
+- Develop `sfdbi` (2000)
+- Write a tutorial and polish documentation (2000)

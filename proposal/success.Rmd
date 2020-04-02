@@ -7,16 +7,19 @@ Projects should have a definition of done that is measurable, and a thorough und
 <!-- 
 What does success look like? 
 -->
+We can interact with a `PostgreSQL` database from R by using `dplyr` workflow and people use it because the documentation is clear and there are good tutorials.
 
 ## Measuring success
 <!-- 
 How will we know when success is achieved, what markers can we use along the way 
 -->
+Increased number of users of the spatial database interface.
 
 ## Future work
 <!-- 
 How could this be extended / developed in the future by yourself and/or the community in general?
 -->
+This work hopefully makes it easier to add support for other spatial databases (table 1).
 
 ## Key risks
 <!-- 
@@ -28,3 +31,4 @@ What sort of things could come up that can delay or break the project?
  - [ ] Costs
 
 -->
+- Pandemic
