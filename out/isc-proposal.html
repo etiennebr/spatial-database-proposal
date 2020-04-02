@@ -9,9 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Etienne Racine and Edzer Pebesma" />
+<meta name="author" content="Etienne Racine" />
 
-<meta name="date" content="2020-04-01" />
+<meta name="date" content="2020-04-02" />
 
 <title>Database interoperability for spatial objects in R</title>
 
@@ -364,8 +364,8 @@ summary {
 
 
 <h1 class="title toc-ignore">Database interoperability for spatial objects in R</h1>
-<h4 class="author">Etienne Racine and Edzer Pebesma</h4>
-<h4 class="date">2020-04-01</h4>
+<h4 class="author">Etienne Racine</h4>
+<h4 class="date">2020-04-02</h4>
 
 </div>
 
@@ -416,25 +416,25 @@ At a high-level address what your proposal is and how it will address the proble
 <p>This proposal builds on the successfully funded simple feature (<code>sf</code>) project. <code>sf</code> is built on the simple feature OGC standard, which facilitates the interoperability with spatial databases. The sf package already supports read and write for postgis, one of the most common and powerful spatial databases, and can use the dbplyr package to push execution into the database. The gdal driver also provides interoperability, but does not allow integration with the dplyr workflow. This feature is however is not very well documented, and little used.</p>
 <p>The proposal is to complete the database support by making more sf operations compatible with other databases, facilitate integration tests by moving database support to another package (sfdbi) and add support for other databases through odbc, potentially unlocking many other spatial databases compatible with the OGC standard. The following table provides some of the most important spatial databases in use.</p>
 <pre><code>## # A tibble: 17 x 4
-##    Database             `Spatial extension` `R Driver`  `Current support☨`           
-##    &lt;chr&gt;                &lt;chr&gt;               &lt;chr&gt;       &lt;chr&gt;                        
-##  1 PostgreSQL           Postgis             Postgres    Partial                      
-##  2 PostgreSQL           Postgis             RPostgreSQL Partial                      
-##  3 PostgreSQL           Postgis             odbc        Partial - Not tested         
-##  4 Couchdb              Geocouch            sofa        Unknown                      
-##  5 PostgreSQL           ArcSDE              odbc        Unknown - Reported usage     
-##  6 Spark                Geospark            sparklyr    Partial with geospark package
-##  7 Oracle               Oracle Spatial      odbc        Unknown                      
-##  8 Microsoft SQL Server Native              odbc        Unknown - Reported usage     
-##  9 MySQL                Native (primitive)  odbc        Unknown                      
-## 10 SQlite               SpatialLite         RSQLite     Unknown                      
-## 11 MariaDB              Native              RMariaDB    Unknown                      
-## 12 BigQuery             BigQuery GIS        bigrquery   Unknown                      
-## 13 H2                   H2GIS               RH2         Unknown                      
-## 14 Redshift             Native (primitive)  odbc        Unknown                      
-## 15 MongoDB              Native (primitive)  mongolite   Unknown                      
-## 16 Parquet              None                arrow       Unknown - Speculative        
-## 17 Feather              None                arrow       Unknown - Speculative</code></pre>
+##    Database     `Spatial extensi… `R Driver` `Current support☨` 
+##    &lt;chr&gt;        &lt;chr&gt;             &lt;chr&gt;      &lt;chr&gt;              
+##  1 PostgreSQL   Postgis           Postgres   Partial            
+##  2 PostgreSQL   Postgis           RPostgreS… Partial            
+##  3 PostgreSQL   Postgis           odbc       Partial - Not test…
+##  4 Couchdb      Geocouch          sofa       Unknown            
+##  5 PostgreSQL   ArcSDE            odbc       Unknown - Reported…
+##  6 Spark        Geospark          sparklyr   Partial with geosp…
+##  7 Oracle       Oracle Spatial    odbc       Unknown            
+##  8 Microsoft S… Native            odbc       Unknown - Reported…
+##  9 MySQL        Native (primitiv… odbc       Unknown            
+## 10 SQlite       SpatialLite       RSQLite    Unknown            
+## 11 MariaDB      Native            RMariaDB   Unknown            
+## 12 BigQuery     BigQuery GIS      bigrquery  Unknown            
+## 13 H2           H2GIS             RH2        Unknown            
+## 14 Redshift     Native (primitiv… odbc       Unknown            
+## 15 MongoDB      Native (primitiv… mongolite  Unknown            
+## 16 Parquet      None              arrow      Unknown - Speculat…
+## 17 Feather      None              arrow      Unknown - Speculat…</code></pre>
 <p><sup>☨ Partial support: is currently supported by sf, but the set of features is limited; Not tested: not included in the continuous integration tests (although there are some ad-hoc tests that can be run manually); Unknown: not tested, might work partially; Reported usage: not tested, but users have notified they had used it; Speculative: we’ve had discussions with the Ursa Labs team, and it seems possible and will require development on our side and on the arrow side – this would greatly facilitate interoperability with the spatial python ecosystem and geopandas.</sup></p>
 </div>
 <div id="detail" class="section level2">
@@ -448,30 +448,14 @@ Depending on project type the detail section should include:
  - [ ] Architecture
  - [ ] Assumptions
 -->
-<p>Minimally, we propose to support dplyr workflows with collect, tbl, copy_to et al. methods for postgis_connection objects. Expand sf functions to be compatible with postgis to the extent possible Teach, through tutorials how to interface with a spatial database and</p>
-<p>The plan is: In sf, refactor code so we can extract the database interface in a separate package It will make maintenance easier Accelerate integration tests Remove DBI dependency In sf, adapt, to the extent possible, functionalities for the database interaction Build a second package, sfdbi, to contain the spatial interface The intended design is to create a spatial database class that could be used to extend the tbl functionality to read and write spatial data using copy_to() and collect(). This is what a minimal usage would look like:</p>
-<pre class="r"><code># A DBI connection modifier (to allow support for more 
-# spatial databases (see table 1)
-postgis &lt;- function(...){
-    structure(..., class = c(&quot;postgis_connection&quot;, class(...)))
-}
-
-# Usage
-con &lt;- DBI::dbConnect(RPostgres::Postgres()) %&gt;%
-    postgis()
-
-# Copy spatial data to database
-x &lt;- copy_to(con, tibble(
-    lon = 1:3,
-    lat = 3:1,
-    geom = st_makepoint(longitude, latitude) %&gt;% st_setsrid(4326)
-))
-
-collect(x)  # would return a tbl with an sfc column</code></pre>
+<p>Minimally, we propose to support <code>dplyr</code> workflows with <code>collect</code>, <code>tbl</code>, <code>copy_to</code> <em>et al.</em> methods for <code>postgis_connection</code> objects. The propose architecture architecture will make it easier to build spatial database connectors (see table 1 for potential). The current architecture makes it hard to distinguish specific implementations of postgis, postgres and DBI.</p>
+<p>While <code>sf</code> already has many compatible functions, we want to handle exceptions and make <code>sf</code> functions compatible with postgis to the extent possible.</p>
+<p>Teach, through a tutorial, how to work with the database interface, and document how to implement database connectors.</p>
 </div>
 </div>
 <div id="project-plan" class="section level1">
 <h1>Project plan</h1>
+<p>The plan is: - In <code>sf</code>, refactor code so we can extract the database interface in a separate package - It will make maintenance easier - Accelerate integration tests - Remove <code>DBI</code> dependency - In <code>sf</code>, adapt, to the extent possible, functionalities for the database interaction - Build a second package, <code>sfdbi</code>, to contain the spatial interface</p>
 <div id="start-up-phase" class="section level2">
 <h2>Start-up phase</h2>
 <!--
@@ -482,6 +466,8 @@ Covering the planning phase, this section should provide a relatively detailed p
  - [ ] Licence decisions
  - [ ] Reporting framework
 -->
+<p>The collaboration will happen through r-spatial. The <code>sf</code> repository will receive the updates, the <code>sfdbi</code> package will be hosted on <a href="https://github.com/r-spatial">r-spatial</a> and the cummunity communication and status updates will happen on <a href="https://github.com/r-spatial/discuss">r-spatial/discuss</a>, r-sgi-geo and #rspatial on twitter.</p>
+<p>The <code>sfdbi</code> will use the tidyverse template for licensing, code of conduct, contributions, etc.</p>
 </div>
 <div id="technical-delivery" class="section level2">
 <h2>Technical delivery</h2>
@@ -490,6 +476,45 @@ Covering the actual delivery of the project this section should provide at least
 
 Including target dates is really important as you need to be committed and the ISC need to have a means of tracking delivery
 -->
+<p>The intended design is to create a spatial database class that could be used to extend the <code>tbl</code> functionality to read and write spatial data using <code>copy_to()</code> and <code>collect()</code>. This is what a minimal usage would look like:</p>
+<pre class="r"><code># A DBI connection modifier (to allow support for more 
+# spatial databases (see table 1)
+postgis &lt;- function(...){
+  structure(..., class = c(&quot;postgis_connection&quot;, class(...)))
+}
+
+copy_to.postgis_connection &lt;- function(con,...) {
+  x &lt;- dbWriteTable(con, ...)  # we already have a dbWriteTable
+  structure(x, class = c(&quot;tbl_sf&quot;, class(...)))
+}
+
+copy_to.tbl_sf &lt;- function(con,...) {
+  dbWriteTable(con, ...)  # we already have a sf::dbWriteTable for DBIObject
+}
+
+collect.tbl_sf &lt;- function(con,...) {
+  # execute the remote query via dbplyr
+  # [...]
+  st_read(con, x)  # we already have a sf::st_read.DBIObject
+}
+
+# Usage
+con &lt;- DBI::dbConnect(RPostgres::Postgres()) %&gt;%
+  postgis()
+
+# Copy spatial data to database
+x &lt;- copy_to(con, tibble(
+  lon = 1:3,
+  lat = 3:1,
+  geom = st_makepoint(longitude, latitude)
+))
+
+y &lt;- x %&gt;% 
+  mutate(
+    geom = st_buffer(geom, 10)
+  )
+
+collect(y)  # would return a tbl with an sfc column</code></pre>
 </div>
 <div id="other-aspects" class="section level2">
 <h2>Other aspects</h2>
@@ -502,6 +527,10 @@ Covering non-technical activities like on-going publicity, paper preparation, di
  - [ ] UseR!
  - [ ] ISC meetings
 -->
+<ul>
+<li>Announcement post early July through #rspatial, <a href="https://github.com/r-spatial/discuss">r-spatial/discuss</a>, r-sgi-geo</li>
+<li>Tutorial at the end of September announced on #rspatial, <a href="https://github.com/r-spatial/discuss">r-spatial/discuss</a>, r-sgi-geo</li>
+</ul>
 </div>
 </div>
 <div id="requirements" class="section level1">
