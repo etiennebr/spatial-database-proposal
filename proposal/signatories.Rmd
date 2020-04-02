@@ -2,4 +2,6 @@
 <!-- 
 Who are the people responsible for actually delivering the project if the proposal gets accepted and are already signed up and rearing to go?
 -->
-Etienne Racine and Edzer Pebesma
+Etienne Racine and Edzer Pebesma.
+Etienne Racine has written all the database connection code in
+`sf`, Edzer Pebesma is main author and maintainer of `sf`.

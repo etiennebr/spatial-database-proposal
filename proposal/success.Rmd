@@ -7,19 +7,22 @@ Projects should have a definition of done that is measurable, and a thorough und
 <!-- 
 What does success look like? 
 -->
-We can interact with a `PostgreSQL` database from R by using `dplyr` workflow and people use it because the documentation is clear and there are good tutorials.
+We can interact with a `PostgreSQL` database from R by using `dplyr`, while using `sf` expressions for spatial operations. Workflows and case studies are documented in vignettes and blog posts. Docker files show complete, reproducible examples that include setting up of a spatial database and loading it with data. Users start using it because the documentation is clear and there are good tutorials.
 
 ## Measuring success
 <!-- 
 How will we know when success is achieved, what markers can we use along the way 
 -->
-Increased number of users of the spatial database interface.
+Success is achieved when 
+* working and tested code is published, 
+* reproducible examples (e.g. in GitHub actions and docker files) are published,
+* documentation, vignettes and blog posts advertise the new functionality.
 
 ## Future work
 <!-- 
 How could this be extended / developed in the future by yourself and/or the community in general?
 -->
-This work hopefully makes it easier to add support for other spatial databases (table 1).
+This work will make it easier to add support for further spatial databases (table 1).
 
 ## Key risks
 <!-- 
@@ -31,4 +34,6 @@ What sort of things could come up that can delay or break the project?
  - [ ] Costs
 
 -->
-- Pandemic
+The database connector code (odbc, DBI, dbplyr) is not in our hands; in the past
+however we have had several productive interactions, including at rstudio::conf meetings, with
+Kirill Mueller, Jim Hester, and Hadley Wickham.

@@ -1,12 +1,12 @@
 # Project plan
 
-The plan is:
-- In `sf`, refactor code so we can extract the database interface in a separate package
-- It will make maintenance easier
-- Accelerate integration tests
-- Remove `DBI` dependency
-- In `sf`, adapt, to the extent possible, functionalities for the database interaction
-- Build a second package, `sfdbi`, to contain the spatial interface
+The plan is to:
+- refactor code in `sf`, so we can extract the database interface in a separate package,
+- make maintenance easier
+- accelerate integration tests
+- remove `DBI` dependency of `sf`
+- adapt, in `sf`, to the extent possible, functionalities for the database interaction
+- build a second package, `sfdbi`, to contain the spatial interface
 
 ## Start-up phase
 <!--
@@ -18,7 +18,7 @@ Covering the planning phase, this section should provide a relatively detailed p
  - [ ] Reporting framework
 -->
 
-The collaboration will happen through r-spatial. The `sf` repository will receive the updates, the `sfdbi` package will be hosted on [r-spatial](https://github.com/r-spatial) and the cummunity communication and status updates will happen on [r-spatial/discuss](https://github.com/r-spatial/discuss), r-sgi-geo and #rspatial on twitter.
+The collaboration will happen through the r-spatial GitHub organisation, using issues on public repositories. The `sf` repository will receive the updates, the `sfdbi` package will be hosted on [r-spatial](https://github.com/r-spatial) and all public communication and status updates will happen on [r-spatial/discuss](https://github.com/r-spatial/discuss), the r-sgi-geo mailinglist and using handle #rspatial on twitter.
 
 The `sfdbi` will use the tidyverse template for licensing, code of conduct, contributions, etc.
 
