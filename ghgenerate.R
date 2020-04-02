@@ -1,6 +1,6 @@
-proposal<-"Boilerplate ISC Proposal"
+proposal<-"Database interoperability for spatial objects in R"
 proposal.file<-"isc-proposal.Rmd"
-author<-"Steph Locke"
+author<-"Etienne Racine"
 
 rmarkdown::render(proposal.file, output_format="html_document",
                   output_dir="out", quiet=TRUE)
