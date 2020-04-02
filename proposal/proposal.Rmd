@@ -1,25 +1,17 @@
 # The proposal
 
-- Clarify the workflow integration with dplyr
-- How to select a database spatial engine (maybe we could wrap the connection with a spatial extension)
-- Merge work form geotidy to sf
-- Document the workflow
-- Provide tutorials
-- Complete odbc support for Postgres, which would potentially open to other spatial extensions
-- Document the features needed for DBI drivers (`SQLite`, `MariaDB`, `bigrquery`)
-
 
 ## Overview
 <!--
 At a high-level address what your proposal is and how it will address the problem identified. Highlight any benefits to the R Community that follow from solving the problem. This should be your most compelling section.
 -->
-This proposal builds on the successfully funded simple feature (`sf`) project. 
+This proposal builds on the successfully R-Consortium funded _Simple Features for R_ (`sf`) project. 
 `sf` is built on the simple feature OGC standard, which facilitates the interoperability with spatial databases. 
-The sf package already supports read and write for postgis, one of the most common and powerful spatial databases, and can use the dbplyr package to push execution into the database. 
-The gdal driver also provides interoperability, but does not allow integration with the dplyr workflow. 
-This feature is however is not very well documented, and little used. 
+Although the GDAL driver of `sf` provides some interoperability, it does not allow integration with the dplyr workflow. 
+The sf package already supports direct read and write for PostGIS, one of the most powerful and commonly used spatial databases, and can use the `dbplyr` package to push execution into the database. 
+This feature is however is not complete, now well documented, and little used. 
 
-The proposal is to complete the database support by making more sf operations compatible with other databases, facilitate integration tests by moving database support to another package (sfdbi) and add support for other databases through odbc, potentially unlocking many other spatial databases compatible with the OGC standard. 
+The proposal is to complete the database support by making more `sf` operations compatible with spatial databases, facilitate integration tests by moving database support from `sf` to another package (`sfdbi`) and add support for other databases through odbc, thereby unlocking many other spatial databases compatible with the OGC standard. 
 The following table provides some of the most important spatial databases in use.
 
 ```{r, echo = FALSE}
@@ -38,8 +30,8 @@ Depending on project type the detail section should include:
  - [ ] Assumptions
 -->
 
-Minimally, we propose to support `dplyr` workflows with `collect`, `tbl`, `copy_to` *et al.* methods for `postgis_connection` objects. The propose architecture architecture will make it easier to build spatial database connectors (see table 1 for potential). The current architecture makes it hard to distinguish specific implementations of postgis, postgres and DBI.
+Minimally, we propose to support `dplyr` workflows with `collect`, `tbl`, `copy_to` *et al.* methods for `postgis_connection` objects. The propose architecture will make it easier to build spatial database connectors (see table 1 for potential). The current architecture makes it hard to distinguish specific implementations of postgis, postgres and DBI.
 
 While `sf` already has many compatible functions, we want to handle exceptions and make `sf` functions compatible with postgis to the extent possible.
 
-Teach, through a tutorial, how to work with the database interface, and document how to implement database connectors.
+We will teach, through a tutorial, how to work with the database interface, and document how to implement database connectors.
