@@ -1,12 +1,18 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Project plan
 
 The plan is to:
-- refactor code in `sf`, so we can extract the database interface in a separate package,
-- make maintenance easier
-- accelerate integration tests
+
+- Extract the database interface in a separate package by refactoring code in `sf` (it will make maintenance easier and accelerate continuous integration checks)
 - remove `DBI` dependency of `sf`
-- adapt, in `sf`, to the extent possible, functionalities for the database interaction
+- adapt, in `sf`, to the extent possible, functionalities for the database interaction (transfer learnings from `etiennebr/geotidy`)
 - build a second package, `sfdbi`, to contain the spatial interface
+- create a Tutorial to interact with a spatial database
+- create a Reference guide to implement spatial database connectors
 
 ## Start-up phase
 <!--
@@ -18,9 +24,9 @@ Covering the planning phase, this section should provide a relatively detailed p
  - [ ] Reporting framework
 -->
 
-The collaboration will happen through the r-spatial GitHub organisation, using issues on public repositories. The `sf` repository will receive the updates, the `sfdbi` package will be hosted on [r-spatial](https://github.com/r-spatial) and all public communication and status updates will happen on [r-spatial/discuss](https://github.com/r-spatial/discuss), the r-sgi-geo mailinglist and using handle #rspatial on twitter.
+The collaboration will happen through the r-spatial GitHub organisation, using issues on public repositories. The `sf` repository will receive the updates, the `sfdbi` package will be hosted on [r-spatial](https://github.com/r-spatial) and all public communication and status updates will happen on [r-spatial/discuss](https://github.com/r-spatial/discuss), the r-sgi-geo mailing list and using the #rspatial tag on twitter.
 
-The `sfdbi` will use the tidyverse template for licensing, code of conduct, contributions, etc.
+The `sfdbi` will be added to the r-spatial github org. The license, code of conduct will be the same than `sf` and we'll use the tidyverse template for other cases.
 
 ## Technical delivery
 <!--
@@ -44,6 +50,10 @@ copy_to.postgis_connection <- function(con,...) {
   structure(x, class = c("tbl_sf", class(...)))
 }
 
+tbl.sf <- function(...){
+  structure(..., class = c("tbl_sf", class(...)))
+}
+
 copy_to.tbl_sf <- function(con,...) {
   dbWriteTable(con, ...)  # we already have a sf::dbWriteTable for DBIObject
 }
@@ -65,14 +75,14 @@ x <- copy_to(con, tibble(
   geom = st_makepoint(longitude, latitude)
 ))
 
+# execute in the database
 y <- x %>% 
   mutate(
     geom = st_buffer(geom, 10)
   )
 
-collect(y)  # would return a tbl with an sfc column
+collect(y)  # will return a tbl with an sfc column
 ```
-
 
 ## Other aspects
 <!--
@@ -85,4 +95,4 @@ Covering non-technical activities like on-going publicity, paper preparation, di
  - [ ] ISC meetings
 -->
 - Announcement post early July through #rspatial, [r-spatial/discuss](https://github.com/r-spatial/discuss), r-sgi-geo
-- Tutorial at the end of September announced on #rspatial, [r-spatial/discuss](https://github.com/r-spatial/discuss), r-sgi-geo
+- Tutorial and reference guide at the end of September announced on #rspatial, [r-spatial/discuss](https://github.com/r-spatial/discuss), r-sgi-geo
