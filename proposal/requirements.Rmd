@@ -2,8 +2,8 @@
 <!-- 
 An idea of what is required to make the project actually happen
 -->
-The path to the solution is clear, and the implementation seems to be relatively straightforward. In the worst case, we will minimize the changes to `sf` to avoid breaking existing code. We don't expect to require changes to `dbplyr`, but this could a source of delays or modification to the plan. 
-Package `rodbc` could also need some modifications, but we have already existing workarounds. 
+The path to the solution is clear, and the implementation seems to be relatively straightforward. In the worst case, we will minimize the changes to `sf` to avoid breaking existing code. We don't expect to require changes to `dbplyr`, but this could be a source of delays or modification to the plan. 
+Package `odbc` could also need some modifications, but we have already existing workarounds. 
 We have not identified other external factors that could impact this project. 
 
 ## People
@@ -17,9 +17,10 @@ Edzer Pebesma will be involved in global design and change review for `sf`.
 <!-- 
 What processes need to be put in place e.g. codes of conduct, regular ISC meetings, handover to the community at large?
 -->
+Etienne Racine and Edzer Pebesma will communicate through github, emails and Skype when needed. We'll engage the R spatial community as much as possible.
 The new package `sfdbi` will be added to the the `r-spatial` GitHub organisation and will adhere to the code of conduct of the `sf` package.
 The tutorials will be shared via github pages and ideally could be run on docker, rstudio.cloud, or netlify to make it easy for the community to use.
-The accomplishments will be documented and andvertised on blog posts on `r-spatial.org`.
+The accomplishments will be documented and advertised on blog posts on `r-spatial.org`.
 
 ## Tools & Tech
 <!--
@@ -29,7 +30,7 @@ Will cloud computing be used - if yes are there are necessary components that wi
 
 Are there tools or tech that don't exist that will be produced to facilitate the project?
 -->
-We will use GitHub actions to systematically test on linux (currently the only OS to support services on github actions). We might perform as-hoc tests for other OS when needed. 
+We will use GitHub actions to systematically test on linux (currently the only OS to support services on github actions). We might perform ad-hoc tests for other OS when needed. 
 
 ## Funding
 <!-- 

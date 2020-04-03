@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # The proposal
 
 
@@ -6,18 +11,23 @@
 At a high-level address what your proposal is and how it will address the problem identified. Highlight any benefits to the R Community that follow from solving the problem. This should be your most compelling section.
 -->
 This proposal builds on the successfully R-Consortium funded _Simple Features for R_ (`sf`) project. 
-`sf` is built on the simple feature OGC standard, which facilitates the interoperability with spatial databases. 
-Although the GDAL driver of `sf` provides some interoperability, it does not allow integration with the dplyr workflow. 
-The sf package already supports direct read and write for PostGIS, one of the most powerful and commonly used spatial databases, and can use the `dbplyr` package to push execution into the database. 
-This feature is however is not complete, now well documented, and little used. 
+The `sf` package already supports direct read and write for PostGIS, one of the most powerful and commonly used spatial databases, and can use the `dbplyr` package to push execution into the database. 
+This feature however is not complete, not well documented, and little used. 
 
-The proposal is to complete the database support by making more `sf` operations compatible with spatial databases, facilitate integration tests by moving database support from `sf` to another package (`sfdbi`) and add support for other databases through odbc, thereby unlocking many other spatial databases compatible with the OGC standard. 
-The following table provides some of the most important spatial databases in use.
+The proposal is to complete the database support by making more `sf` operations compatible with spatial databases, facilitate integration tests by moving database support from `sf` to another package (`sfdbi`) and make it easier to add support for other databases, thereby unlocking many other spatial databases compatible with the OGC standard. The following table provides an overview of the potential of the project by presenting some of the most important spatial databases in use.
 
+
+__Table 1__ Spatial databases and drivers. This proposal focuses on the first two rows (`RPostgres` and `odbc`), and the new architecture will make it easier to add more drivers.
 ```{r, echo = FALSE}
 readr::read_csv("../data/spatial-drivers.csv", col_types = "cccc")
 ```
-<sup>☨ Partial support: is currently supported by sf, but the set of features is limited; Not tested: not included in the continuous integration tests (although there are some ad-hoc tests that can be run manually); Unknown: not tested, might work partially; Reported usage: not tested, but users have notified they had used it; Speculative: we’ve had discussions with the Ursa Labs team, and it seems possible and will require development on our side and on the arrow side -- this would greatly facilitate interoperability with the spatial python ecosystem and geopandas.</sup>
+Notes (1):
+
+- _Partial support_: is currently supported by `sf`, but the set of features is limited
+- _Not tested_: not included in the continuous integration tests (although there are some ad-hoc tests that can be run manually)
+- _Unknown_: not tested, might work partially
+- _Reported usage_: not tested, but users have notified they had used it
+- _Speculative_: we’ve had discussions with the Ursa Labs team, and it seems possible and will require development on our side and on the arrow side  -- this would greatly facilitate interoperability with the spatial python ecosystem and geopandas.
 
 ## Detail
 <!--
@@ -30,7 +40,7 @@ Depending on project type the detail section should include:
  - [ ] Assumptions
 -->
 
-Minimally, we propose to support `dplyr` workflows with `collect`, `tbl`, `copy_to` *et al.* methods for `postgis_connection` objects. The propose architecture will make it easier to build spatial database connectors (see table 1 for potential). The current architecture makes it hard to distinguish specific implementations of postgis, postgres and DBI.
+Minimally, we propose to support `dplyr` workflows with `collect`, `tbl`, `copy_to` *et al.* methods for `postgis_connection` objects. The current implementation makes it hard to distinguish specific implementations of the driver, postgis and postgres.  The proposed architecture will make it easier to build spatial database connectors (see table 1 for potential). 
 
 While `sf` already has many compatible functions, we want to handle exceptions and make `sf` functions compatible with postgis to the extent possible.
 

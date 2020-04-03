@@ -12,11 +12,9 @@ It is important to cover:
 
 Large spatial data can be hard to analyze with R because of RAM limitations. Users often turn to spatial databases for this process and go back-and-forth with R, since R is still needed for e.g. modeling. Also corporations and large research groups, among others, often store data in a central database. The ability to interact directly with a spatial database, from R, can accelerate the work of R users.
 
-The sf package is built on the simple feature OGC standard, which facilitates the interoperability with spatial databases. We already provide read and write operations to postgis from sf, and we can also integrate with the dbplyr package to push execution into the database. The gdal driver within sf also provides interoperability, but does not allow integration with the dplyr workflow.
+The `sf` package is built on the simple feature OGC standard, which facilitates the interoperability with spatial databases. We already provide read and write operations to [PostGIS](https://postgis.net/) from `sf`, and we can also integrate with the `dbplyr` package to push execution into the database. The `gdal` driver within `sf` also provides interoperability, but does not allow integration with the `dplyr` workflow.
 
 This proposal is to :
 
 - Complete and clarify the interface for the `RPostgres` and `odbc` drivers by creating a separate package, `sfdbi`, to provide spatial database interface
 - Create a tutorial and good documentation to use the spatial database interface
-
-

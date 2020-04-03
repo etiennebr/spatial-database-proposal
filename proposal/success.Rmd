@@ -13,7 +13,8 @@ We can interact with a `PostgreSQL` database from R by using `dplyr`, while usin
 <!-- 
 How will we know when success is achieved, what markers can we use along the way 
 -->
-Success is achieved when 
+Success is achieved when: 
+
 * working and tested code is published, 
 * reproducible examples (e.g. in GitHub actions and docker files) are published,
 * documentation, vignettes and blog posts advertise the new functionality.
