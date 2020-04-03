@@ -3,11 +3,11 @@ title: "`Database interoperability for spatial objects in R`"
 author: "Etienne Racine"
 date: "`r Sys.Date()`"
 output:
+  html_document: 
+    df_print: kable
   pdf_document: 
     df_print: kable
     latex_engine: xelatex
-  html_document: 
-    df_print: kable
 ---
 
 ```{r setup, eval=TRUE, results='hide', echo=FALSE}
